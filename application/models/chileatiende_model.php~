@@ -25,6 +25,7 @@ class Chileatiende_model extends CI_Model {
 		$this->db->or_like('dump','f.p.s.');
 		$this->db->or_like('dump','F.P.S.');
 		$this->db->or_like('dump','Ficha de Protección Social'); 
+		$this->db->or_like('dump','Ficha CAS'); 
 		$query = $this->db->get();
 
 		if ($query->num_rows() > 0)
@@ -35,6 +36,15 @@ class Chileatiende_model extends CI_Model {
 		{
 			return "lol";
 		}
+	}
+
+	function insert_data($query)
+	{
+		$data = array(
+				'dump' => $query,
+			);
+
+		$this->db->insert('dump_chileatiende', $data);
 	}
 
 }

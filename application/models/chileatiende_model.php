@@ -38,4 +38,9 @@ class Chileatiende_model extends CI_Model {
 		}
 	}
 
+	function insert_data($query)
+	{
+		$this->db->insert('dump_chileatiende', $query);
+	}
+
 }
