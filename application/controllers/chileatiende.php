@@ -156,8 +156,6 @@ class Chileatiende extends CI_Controller {
 					$ficha['operadorFPS'] = "Desconocido";
 					$this->variable = null;
 				}
-				unset($ficha['tema']);
-				unset($ficha['tags']);
 				if(!is_null($this->variable))
 				{
 					preg_match_all("|(.*) (.*) puntos(.*)|", $this->variable, $resultado, PREG_PATTERN_ORDER); 
@@ -186,8 +184,12 @@ class Chileatiende extends CI_Controller {
 				}
 				$this->variable = null;
 			}
-				print_r($FPS[0]);
-				echo "<br/>";
+			foreach($FPS as $ficha)
+			{
+				unset($ficha['temas']);
+				unset($ficha['tags']);
+				$this->chileatiende->insert_data($ficha);
+			}
 		}
 	}
 
