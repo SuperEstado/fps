@@ -135,38 +135,57 @@ class Chileatiende extends CI_Controller {
 
 			foreach($fichasfps as $ficha)
 			{
-				if($this->operador_aritmetico("|<(.*)>(.*)menor(.*)FPS(.*)</(.*)>|U",$ficha)||$this->operador_aritmetico("|<(.*)>(.*)FPS(.*)menor(.*)</(.*)>|U",$ficha)||$this->operador_aritmetico("|<(.*)>(.*)hasta(.*)FPS(.*)</(.*)>|U",$ficha)||$this->operador_aritmetico("|<(.*)>(.*)FPS(.*)hasta(.*)</(.*)>|U",$ficha)||$this->operador_aritmetico("|<(.*)>(.*)máximo(.*)FPS(.*)</(.*)>|U",$ficha)||$this->operador_aritmetico("|<(.*)>(.*)FPS(.*)máximo(.*)</(.*)>|U",$ficha)||$this->operador_aritmetico("|<(.*)>(.*)inferior(.*)FPS(.*)</(.*)>|U",$ficha)||$this->operador_aritmetico("|<(.*)>(.*)FPS(.*)inferior(.*)</(.*)>|U",$ficha)||$this->operador_aritmetico("|<(.*)>(.*)no sobrepase(.*)FPS(.*)</(.*)>|U",$ficha)||$this->operador_aritmetico("|<(.*)>(.*)FPS(.*)no sobrepase(.*)</(.*)>|U",$ficha)||$this->operador_aritmetico("|<(.*)>(.*)máximo(.*)Ficha de Protección Social(.*)</(.*)>|U",$ficha)||$this->operador_aritmetico("|<li>(.*)Ficha de Protección Social(.*)a(.*)</li>|U",$ficha))
+					if($this->operador_aritmetico("|<(.*)>(.*)menor(.*)FPS(.*)</(.*)>|U",$ficha)||$this->operador_aritmetico("|<(.*)>(.*)FPS(.*)menor(.*)</(.*)>|U",$ficha)||$this->operador_aritmetico("|<(.*)>(.*)hasta(.*)FPS(.*)</(.*)>|U",$ficha)||$this->operador_aritmetico("|<(.*)>(.*)FPS(.*)hasta(.*)</(.*)>|U",$ficha)||$this->operador_aritmetico("|<(.*)>(.*)máximo(.*)FPS(.*)</(.*)>|U",$ficha)||$this->operador_aritmetico("|<(.*)>(.*)FPS(.*)máximo(.*)</(.*)>|U",$ficha)||$this->operador_aritmetico("|<(.*)>(.*)inferior(.*)FPS(.*)</(.*)>|U",$ficha)||$this->operador_aritmetico("|<(.*)>(.*)FPS(.*)inferior(.*)</(.*)>|U",$ficha)||$this->operador_aritmetico("|<(.*)>(.*)no sobrepase(.*)FPS(.*)</(.*)>|U",$ficha)||$this->operador_aritmetico("|<(.*)>(.*)FPS(.*)no sobrepase(.*)</(.*)>|U",$ficha)||$this->operador_aritmetico("|<(.*)>(.*)máximo(.*)Ficha de Protección Social(.*)</(.*)>|U",$ficha)||$this->operador_aritmetico("|<li>(.*)Ficha de Protección Social(.*)a(.*)</li>|U",$ficha))
 				{
-					echo "Menor";
+					$ficha['operadorFPS'] = "Menor";
 				} 
 				else if($this->operador_aritmetico("|<(.*)>(.*)mayor(.*)FPS(.*)</(.*)>|U",$ficha)||$this->operador_aritmetico("|<(.*)>(.*)FPS(.*)mayor(.*)</(.*)>|U",$ficha)||$this->operador_aritmetico("|<(.*)>(.*)desde(.*)FPS(.*)</(.*)>|U",$ficha)||$this->operador_aritmetico("|<(.*)>(.*)FPS(.*)desde(.*)</(.*)>|U",$ficha)||$this->operador_aritmetico("|<(.*)>(.*)mínimo(.*)FPS(.*)</(.*)>|U",$ficha)||$this->operador_aritmetico("|<(.*)>(.*)FPS(.*)mínimo(.*)</(.*)>|U",$ficha)||$this->operador_aritmetico("|<(.*)>(.*)superior(.*)FPS(.*)</(.*)>|U",$ficha)||$this->operador_aritmetico("|<(.*)>(.*)FPS(.*)superior(.*)</(.*)>|U",$ficha)||$this->operador_aritmetico("|<(.*)>(.*)superior(.*)Ficha CAS(.*)</(.*)>|U",$ficha)||$this->operador_aritmetico("|<(.*)>(.*)Ficha CAS(.*)superior(.*)</(.*)>|U",$ficha))
 				{
-					echo "Mayor";
+					$ficha['operadorFPS'] = "Mayor";
 				}
 				else if($this->operador_aritmetico("|<(.*)>(.*)contar(.*)FPS(.*)</(.*)>|U",$ficha)||$this->operador_aritmetico("|<(.*)>(.*)FPS(.*)contar(.*)</(.*)>|U",$ficha)||$this->operador_aritmetico("|<(.*)>(.*)Contar(.*)FPS(.*)</(.*)>|U",$ficha)||$this->operador_aritmetico("|<(.*)>(.*)FPS(.*)Contar(.*)</(.*)>|U",$ficha))
 				{
-					echo "Contar";
+					$ficha['operadorFPS'] = "Contar";
 				}
 				else if($this->operador_aritmetico("|<(.*)>(.*)aplicación(.*)Ficha de Protección Social(.*)</(.*)>|U",$ficha)||$this->operador_aritmetico("|<(.*)>(.*)Ficha de Protección Social(.*)aplicación(.*)</(.*)>|U",$ficha))
 				{
-					echo "Aplicación";
+					$ficha['operadorFPS'] = "Aplicación";
 				}
 				else
 				{
-					echo "Desconocido";
+					$ficha['operadorFPS'] = "Desconocido";
+					$this->variable = null;
 				}
 				if(!is_null($this->variable))
 				{
-					$resultado = preg_replace("|(^0-9)puntos|", "", $this->variable); 
+					preg_match_all("|(.*) (.*) puntos(.*)|", $this->variable, $resultado, PREG_PATTERN_ORDER); 
+					if(isset($resultado[2][0]))
+					{		
+						$ficha['FPS'] = str_replace(".", "", $resultado[2][0]);
+						$FPS[] = $ficha;
+					} else
+					{
+						preg_match_all("|(.*) (.*) en la Ficha(.*)|", $this->variable, $resultado, PREG_PATTERN_ORDER); 
+						if(isset($resultado[2][0]))
+						{		
+							$ficha['FPS'] = str_replace(".", "", $resultado[2][0]);
+							$FPS[] = $ficha;
+						}
+						else
+						{
+							preg_match_all("|(.*) (.*) en la Ficha(.*)|", $this->variable, $resultado, PREG_PATTERN_ORDER); 
+							if(isset($resultado[2][0]))
+							{		
+								$ficha['FPS'] = str_replace(".", "", $resultado[2][0]);
+								$FPS[] = $ficha;
+							} 
+						}
+					}
 				}
-				print_r($resultado);
 				$this->variable = null;
-				echo"<br/>";
 			}
-			//echo "<pre>";
-			//print_r(count($fichasfps));
-			//print_r($fichasfps);
-			//echo "</pre>";
+				print_r($FPS[0]);
+				echo "<br/>";
 		}
 	}
 
