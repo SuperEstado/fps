@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<?=$this->load->view('head');?>
+	</head>
+<body>
+	<header>
+		<?=$this->load->view('header');?>
+	</header>
+<div class="container">
+	<div class="row">
+		<div class="span12">
+			<div class="tabbable"> <!-- Only required for left/right tabs -->
+				<ul class="nav nav-tabs">
+					<li class="active"><a href="#tab1" data-toggle="tab">Buscador Beneficios</a></li>
+					<li><a href="#tab2" data-toggle="tab">Reclama por tu FPS</a></li>
+				</ul>
+				<div class="tab-content">
+					<div class="tab-pane" id="tab2">
+						<p>Reclamos</p>
+					</div>
+					<div class="tab-pane active" id="tab1">
+						<p>Este es tu puntaje FPS <span class="label label-success"><?=$valorFPS?></span> y puedes postular 
+						a <span class="label label-info"><?=$nFichas?></span> beneficios, disponibles para <span class="label label-warning"><?=$personas?></span> personas en Chile</p>
+
+						<br/>
+						<div class="accordion" id="accordion2">
+							<div class="accordion-group">
+								<? foreach($fichas as $ficha) {?>
+								<div class="accordion-heading">
+									<a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapse<?=$ficha['id']?>">
+										<h3><?=$ficha['titulo']?></h3>
+									</a>
+								</div>
+								<div id="collapse<?=$ficha['id']?>" class="accordion-body collapse" style="height: 0px; ">
+									<div class="accordion-inner">
+										<div class="row caja">
+											<div class="span9">
+												<dl class="dl-horizontal">
+													<dt>Descripción:</dt>
+													<dd><?=$ficha['objetivo']?></dd>
+													<dt>Beneficiarios:</dt>
+													<dd><?=$ficha['beneficiarios']?></dd>
+													<dt>Documentos:</dt>
+													<dd><?=$ficha['doc_requeridos']?></dd>
+												</dl>
+											</div>
+
+											<div class="span2">
+												<? if(isset($ficha['guia_online_url'])&&$ficha['guia_online_url']!='') { ?>
+												<a href="<?=$ficha['guia_online_url']?>" class="btn" target="_blank" >Realiza el trámite online</a>
+												<? } else { ?>
+												<a href="http://www.chilesinpapeleo.cl/digitalizacion/formulario?origen=<?=$ficha['codigo']?>&tipo=p&tipo_tramite=online" class="btn" target="_blank" >Pide este trámite online</a>
+												<? } //Cierre del if-else del boton del tramite ?>
+											</div>
+										</div>
+									</div>
+								</div>
+								<? } ?>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+		<?=$this->load->view('footer');?>
+
+  </body>
+</html>
